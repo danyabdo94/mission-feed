@@ -1,0 +1,26 @@
+query GET_FEED($limit: Int!, $offset: Int!) {
+    getFeed(input: { limit: $limit, offset: $offset }) {
+        items {
+            ... on FBPostMission {
+                date
+                title
+                image {
+                    alt
+                    src
+                    src2x
+                }
+                cashReward
+            }
+            ... on IGStoryMission {
+                date
+                title
+                video {
+                    alt
+                    src
+                }
+                cashReward
+            }
+        }
+        hasNextPage
+    }
+}

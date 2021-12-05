@@ -1,14 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { GetFeedResponse } from "./generated/graphql";
+
+const client = new ApolloClient({
+    uri: "https://master-bb-ta-frontend-3tunt6sv4q-ez.a.run.app/graphql",
+    cache: new InMemoryCache({
+        typePolicies: {
+            Query: {
+                fields: {
+                    getFeed: {
+                        keyArgs: false,
+                        merge(existing: GetFeedResponse, incoming: GetFeedResponse) {
+                            const cumulative = existing?.items
+                                ? [...existing.items, ...incoming.items]
+                                : [...incoming.items];
+                            return {
+                                hasNextPage: incoming.hasNextPage,
+                                items: cumulative,
+                            };
+                        },
+                    },
+                },
+            },
+        },
+    }),
+    connectToDevTools: true,
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <ApolloProvider client={client}>
+            <App />
+        </ApolloProvider>
+    </React.StrictMode>,
+    document.getElementById("root"),
 );
 
 // If you want to start measuring performance in your app, pass a function
