@@ -91,6 +91,7 @@ const Feed: React.FC = () => {
             next={nextPage}
             hasMore={data?.getFeed.hasNextPage || false}
             loader={<Spinner />}
+            style={{ marginBottom: 16 }}
         >
             {data?.getFeed.items.map((item) => (
                 <Fragment key={item.title + item.date}>
