@@ -15,10 +15,6 @@ const StyledButton = styled.button`
     ${iphoneX} {
         padding: 4px 12px;
         border-radius: 8px;
-        font-family: Roboto;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 12px;
         line-height: 20px;
         display: flex;
         align-items: center;
@@ -29,6 +25,16 @@ const StyledButton = styled.button`
     &[data-is-active="true"] {
         background: ${Colors.blue40};
     }
+`;
+
+const StyledSpan = styled.span`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 20px;
+    align-items: center;
+    letter-spacing: 0.25px;
 `;
 
 interface IBaseButtonProps {
@@ -46,7 +52,7 @@ const Button = ({ children, onClick, ...props }: NativeButtonProps) => {
     };
     return (
         <StyledButton {...props} onClick={handleClick}>
-            <span>{children}</span>
+            <StyledSpan>{children}</StyledSpan>
         </StyledButton>
     );
 };
