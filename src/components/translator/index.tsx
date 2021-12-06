@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Button from "../../atoms/button";
+import { Colors } from "../../colors";
+import { LanguageContext, Languages } from "../../contexts/languages";
 import { iphoneX } from "../../devices";
 
 const StyledTranslator = styled.div`
@@ -12,10 +14,17 @@ const StyledTranslator = styled.div`
 `;
 
 const Translator: React.FC = () => {
+    const { language, setLanguage } = useContext(LanguageContext);
+    console.log({ language });
     return (
         <StyledTranslator>
-            <Button onClick={() => console.log("test EN")}>English</Button>
-            <Button onClick={() => console.log("test SP")}>Spanish</Button>
+            {console.log(language === Languages.EN)}
+            <Button data-is-active={language === Languages.EN} onClick={() => setLanguage && setLanguage(Languages.EN)}>
+                English
+            </Button>
+            <Button data-is-active={language === Languages.SP} onClick={() => setLanguage && setLanguage(Languages.SP)}>
+                Spanish
+            </Button>
         </StyledTranslator>
     );
 };

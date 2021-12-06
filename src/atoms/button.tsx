@@ -9,10 +9,11 @@ const StyledButton = styled.button`
     justify-content: center;
     align-items: flex-start;
     border: none;
+    background: ${Colors.default};
+    color: #000000;
 
     ${iphoneX} {
         padding: 4px 12px;
-        background: ${Colors.default};
         border-radius: 8px;
         font-family: Roboto;
         font-style: normal;
@@ -22,18 +23,29 @@ const StyledButton = styled.button`
         display: flex;
         align-items: center;
         letter-spacing: 0.25px;
-        color: #000000;
         margin-left: 12px;
     }
 
-    :active {
+    &[data-is-active="true"] {
         background: ${Colors.blue40};
     }
 `;
 
-const Button: React.FC<{ onClick: () => void }> = ({ onClick, children }) => {
+interface IBaseButtonProps {
+    children?: React.ReactNode;
+}
+
+type NativeButtonProps = {
+    onClick: React.MouseEventHandler<HTMLElement>;
+} & IBaseButtonProps &
+    Omit<React.ButtonHTMLAttributes<any>, "type" | "onClick">;
+
+const Button = ({ children, onClick, ...props }: NativeButtonProps) => {
+    const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+        if (onClick) onClick(e); // works
+    };
     return (
-        <StyledButton onClick={(e) => onClick()}>
+        <StyledButton {...props} onClick={handleClick}>
             <span>{children}</span>
         </StyledButton>
     );
