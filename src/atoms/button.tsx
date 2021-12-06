@@ -19,7 +19,6 @@ const StyledButton = styled.button`
         display: flex;
         align-items: center;
         letter-spacing: 0.25px;
-        margin-left: 12px;
     }
 
     &[data-is-active="true"] {
@@ -27,18 +26,9 @@ const StyledButton = styled.button`
     }
 `;
 
-const StyledSpan = styled.span`
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 20px;
-    align-items: center;
-    letter-spacing: 0.25px;
-`;
-
 interface IBaseButtonProps {
     children?: React.ReactNode;
+    style?: React.CSSProperties;
 }
 
 type NativeButtonProps = {
@@ -46,13 +36,13 @@ type NativeButtonProps = {
 } & IBaseButtonProps &
     Omit<React.ButtonHTMLAttributes<any>, "type" | "onClick">;
 
-const Button = ({ children, onClick, ...props }: NativeButtonProps) => {
+const Button = ({ children, onClick, style, ...props }: NativeButtonProps) => {
     const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
         if (onClick) onClick(e); // works
     };
     return (
-        <StyledButton {...props} onClick={handleClick}>
-            <StyledSpan>{children}</StyledSpan>
+        <StyledButton style={style} onClick={handleClick} {...props}>
+            {children}
         </StyledButton>
     );
 };

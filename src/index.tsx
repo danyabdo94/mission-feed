@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { GetFeedResponse } from "./generated/graphql";
+import "typeface-roboto";
 
 const client = new ApolloClient({
     uri: "https://master-bb-ta-frontend-3tunt6sv4q-ez.a.run.app/graphql",

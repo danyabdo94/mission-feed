@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import Button from "../../atoms/button";
-import { Colors } from "../../colors";
 import { LanguageContext, Languages } from "../../contexts/languages";
 import { iphoneX } from "../../devices";
 
@@ -19,10 +18,18 @@ const Translator: React.FC = () => {
     return (
         <StyledTranslator>
             {console.log(language === Languages.EN)}
-            <Button data-is-active={language === Languages.EN} onClick={() => setLanguage && setLanguage(Languages.EN)}>
+            <Button
+                style={{ marginLeft: "12px" }}
+                data-is-active={language === Languages.EN}
+                onClick={() => setLanguage && setLanguage(Languages.EN)}
+            >
                 English
             </Button>
-            <Button data-is-active={language === Languages.SP} onClick={() => setLanguage && setLanguage(Languages.SP)}>
+            <Button
+                style={{ marginLeft: "12px" }}
+                data-is-active={language === Languages.SP}
+                onClick={() => setLanguage && setLanguage(Languages.SP)}
+            >
                 Spanish
             </Button>
         </StyledTranslator>
