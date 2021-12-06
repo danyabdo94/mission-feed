@@ -13,7 +13,7 @@ const StyledButton = styled.button`
     color: #000000;
 
     ${iphoneX} {
-        padding: 4px 12px;
+        padding: 4px 8px;
         border-radius: 8px;
         line-height: 20px;
         display: flex;

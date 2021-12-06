@@ -6,9 +6,11 @@ import { iphoneX } from "../../../devices";
 import { Mission } from "../../../generated/graphql";
 import Media from "./media";
 import { ReactComponent as GiftIcon } from "../../../assets/gift.svg";
+import { ReactComponent as FacebookIcon } from "../../../assets/fb.svg";
+import { ReactComponent as InstagramIcon } from "../../../assets/ig.svg";
 
 const StyledFeedContainer = styled.div`
-    display: block;
+    position: relative;
     ${iphoneX} {
         margin-top: 24px;
         margin-left: 16px;
@@ -61,9 +63,43 @@ const StyledInLine = styled.div`
     }
 `;
 
+const StyledMissionDisclaimer = styled.div`
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    padding: 4px 8px;
+    background: ${Colors.white};
+    opacity: 0.8;
+    backdrop-filter: blur(20px);
+    border-radius: 8px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.25px;
+    display: flex;
+    align-items: center;
+`;
+
+const StyledDot = styled.div`
+    width: 2px;
+    height: 2px;
+    background: #161617;
+    border-radius: 16px;
+    margin-right: 4px;
+    margin-left: 4px;
+`;
+
 const MissionView: React.FC<{ mission: Mission }> = ({ mission }) => {
     return (
         <StyledFeedContainer>
+            <StyledMissionDisclaimer>
+                <span>Cash</span>
+                <StyledDot></StyledDot>
+                {mission.__typename === "FBPostMission" && <FacebookIcon />}
+                {mission.__typename === "IGStoryMission" && <InstagramIcon />}
+            </StyledMissionDisclaimer>
             <Media mission={mission}></Media>
             <StyledButtonContainer>
                 <StyledH2>{mission.title}</StyledH2>
