@@ -109,7 +109,7 @@ const MissionView: React.FC<{ mission: Mission }> = ({ mission }) => {
                         backgroundColor: Colors.white,
                         padding: 0,
                     }}
-                    onClick={() => console.log(mission.title)}
+                    onClick={() => console.log("To Be Implemented")}
                 >
                     <StyledInLine>
                         <GiftIcon />

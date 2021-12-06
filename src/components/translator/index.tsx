@@ -14,10 +14,8 @@ const StyledTranslator = styled.div`
 
 const Translator: React.FC = () => {
     const { language, setLanguage } = useContext(LanguageContext);
-    console.log({ language });
     return (
         <StyledTranslator>
-            {console.log(language === Languages.EN)}
             <Button
                 style={{ marginLeft: "12px" }}
                 data-is-active={language === Languages.EN}

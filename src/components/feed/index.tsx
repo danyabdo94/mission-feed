@@ -62,8 +62,6 @@ const Feed: React.FC = () => {
         setFirstMissions(localFirstMissions);
     };
 
-    console.log({ firstMissions });
-
     useEffect(() => {
         getFeed({
             variables: {
