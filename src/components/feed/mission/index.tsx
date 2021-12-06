@@ -5,6 +5,7 @@ import { Colors } from "../../../colors";
 import { iphoneX } from "../../../devices";
 import { Mission } from "../../../generated/graphql";
 import Media from "./media";
+import { ReactComponent as GiftIcon } from "../../../assets/gift.svg";
 
 const StyledFeedContainer = styled.div`
     display: block;
@@ -41,12 +42,23 @@ const StyledButtonContainer = styled.div`
 `;
 
 const StyledSpan = styled.span`
-    font-family: Roboto;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
     line-height: 20px;
     align-items: center;
+    ${iphoneX} {
+        margin-right: 8px;
+        margin-left: 8px;
+    }
+`;
+
+const StyledInLine = styled.div`
+    font-family: Roboto;
+    display: flex;
+    ${iphoneX} {
+        margin: 9px;
+    }
 `;
 
 const MissionView: React.FC<{ mission: Mission }> = ({ mission }) => {
@@ -59,10 +71,14 @@ const MissionView: React.FC<{ mission: Mission }> = ({ mission }) => {
                     style={{
                         width: "100%",
                         backgroundColor: Colors.white,
+                        padding: 0,
                     }}
                     onClick={() => console.log(mission.title)}
                 >
-                    <StyledSpan>Reward</StyledSpan>
+                    <StyledInLine>
+                        <GiftIcon />
+                        <StyledSpan>Reward</StyledSpan>$ {mission.cashReward}
+                    </StyledInLine>
                 </Button>
             </StyledButtonContainer>
         </StyledFeedContainer>
