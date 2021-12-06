@@ -5,6 +5,7 @@ import Header from "../../atoms/header";
 import Spinner from "../../atoms/spinner";
 import { iphoneX } from "../../devices";
 import { useGet_FeedLazyQuery } from "../../generated/graphql";
+import MetaTags from "../meta-tags";
 import MissionView from "./mission";
 
 const StyledHeaderContainer = styled.div`
@@ -91,14 +92,17 @@ const Feed: React.FC = () => {
             loader={<Spinner />}
             style={{ marginBottom: 16 }}
         >
-            {data?.getFeed.items.map((item) => (
+            {data?.getFeed.items.map((item, index) => (
                 <Fragment key={item.title + item.date}>
                     {firstMissions[item.title + item.date] && (
                         <StyledHeaderContainer>
                             <Header>{firstMissions[item.title + item.date]}</Header>
                         </StyledHeaderContainer>
                     )}
+
                     <MissionView mission={item} />
+
+                    {index === data?.getFeed.items.length - 1 && <MetaTags mission={item} />}
                 </Fragment>
             ))}
         </InfiniteScroll>
