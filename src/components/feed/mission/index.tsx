@@ -8,6 +8,7 @@ import Media from "./media";
 import { ReactComponent as GiftIcon } from "../../../assets/gift.svg";
 import { ReactComponent as FacebookIcon } from "../../../assets/fb.svg";
 import { ReactComponent as InstagramIcon } from "../../../assets/ig.svg";
+import { useTranslation } from "react-i18next";
 
 const StyledFeedContainer = styled.div`
     position: relative;
@@ -92,10 +93,11 @@ const StyledDot = styled.div`
 `;
 
 const MissionView: React.FC<{ mission: Mission }> = ({ mission }) => {
+    const { t } = useTranslation("common");
     return (
         <StyledFeedContainer>
             <StyledMissionDisclaimer>
-                <span>Cash</span>
+                <span>{t("cash")}</span>
                 <StyledDot></StyledDot>
                 {mission.__typename === "FBPostMission" && <FacebookIcon />}
                 {mission.__typename === "IGStoryMission" && <InstagramIcon />}
@@ -113,7 +115,7 @@ const MissionView: React.FC<{ mission: Mission }> = ({ mission }) => {
                 >
                     <StyledInLine>
                         <GiftIcon />
-                        <StyledSpan>Reward</StyledSpan>$ {mission.cashReward}
+                        <StyledSpan>{t("reward")}</StyledSpan>$ {mission.cashReward}
                     </StyledInLine>
                 </Button>
             </StyledButtonContainer>

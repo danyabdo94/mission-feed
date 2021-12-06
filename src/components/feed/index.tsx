@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import Header from "../../atoms/header";
 import Spinner from "../../atoms/spinner";
+import { LanguageContext } from "../../contexts/languages";
 import { iphoneX } from "../../devices";
 import { useGet_FeedLazyQuery } from "../../generated/graphql";
 import MetaTags from "../meta-tags";
@@ -20,17 +21,41 @@ interface GroupedByDates {
 }
 
 const Feed: React.FC = () => {
+    const { language } = useContext(LanguageContext);
+
     const pageSize = 4;
     const [offset, setOffset] = useState<number>(0);
 
     const [firstMissions, setFirstMissions] = useState<GroupedByDates>({});
 
-    const formatDate = (date: string) => {
-        const sliced = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric" })
-            .format(new Date(date))
-            .split(" ");
+    const formatDate = (date: string) =>
+        new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric" }).format(new Date(date));
 
-        return `${sliced[1].split(",")[0]} ${sliced[0]} ${sliced[2]}`;
+    const localeDate = (date: string) => {
+        const sliced = new Intl.DateTimeFormat(language, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }).formatToParts(new Date(date));
+
+        let constructedData = { day: "", month: "", year: "" };
+        sliced.forEach((element) => {
+            switch (element.type) {
+                case "day":
+                    constructedData.day = element.value;
+                    break;
+                case "month":
+                    constructedData.month = element.value;
+                    break;
+                case "year":
+                    constructedData.year = element.value;
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        return `${constructedData.day} ${constructedData.month} ${constructedData.year} `;
     };
 
     const [getFeed, { error, data, fetchMore }] = useGet_FeedLazyQuery({
@@ -96,7 +121,7 @@ const Feed: React.FC = () => {
                 <Fragment key={item.title + item.date}>
                     {firstMissions[item.title + item.date] && (
                         <StyledHeaderContainer>
-                            <Header>{firstMissions[item.title + item.date]}</Header>
+                            <Header>{localeDate(firstMissions[item.title + item.date])}</Header>
                         </StyledHeaderContainer>
                     )}
 
