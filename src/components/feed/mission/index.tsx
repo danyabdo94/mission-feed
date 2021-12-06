@@ -13,7 +13,7 @@ const StyledFeedContainer = styled.div`
         margin-top: 24px;
         margin-left: 16px;
         margin-right: 16px;
-        border-radius: 8px;
+        border-radius: 0 0 8px 8px;
     }
     background: ${Colors.default};
 `;

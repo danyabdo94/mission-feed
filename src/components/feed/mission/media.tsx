@@ -16,12 +16,12 @@ const Media: React.FC<{ mission: Mission }> = ({ mission }) => (
                 srcSet={`${mission.image.src2x} 2x`}
                 src={mission.image.src}
                 alt={mission.image.alt as string}
-                width="345px"
+                width="343px"
                 height="230px"
             />
         )}
         {mission?.__typename === "IGStoryMission" && (
-            <video src={mission.video.src} width="345px" height="230px" controls />
+            <video src={mission.video.src} width="343px" height="230px" controls />
         )}
     </StyledMedia>
 );
