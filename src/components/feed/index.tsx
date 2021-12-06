@@ -1,35 +1,68 @@
-import { useQuery } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
+import Header from "../../atoms/header";
 import Spinner from "../../atoms/spinner";
 import { iphoneX } from "../../devices";
-import { useGet_FeedLazyQuery, useGet_FeedQuery } from "../../generated/graphql";
-// import { GET_MISSIONS } from "./gql";
+import { useGet_FeedLazyQuery } from "../../generated/graphql";
+import MissionView from "./mission";
 
-const StyledFeedContainer = styled.div`
+const StyledHeaderContainer = styled.div`
     display: flex;
     ${iphoneX} {
-        margin-top: 24px;
-        margin-left: 16px;
+        margin-top: 40px;
+        margin-left: 20px;
     }
 `;
+interface GroupedByDates {
+    [x: string]: string;
+}
 
 const Feed: React.FC = () => {
     const pageSize = 4;
-    const [missions, setMissions] = useState<{}[]>([]);
     const [offset, setOffset] = useState<number>(0);
 
-    const [getFeed, { loading, error, data, fetchMore }] = useGet_FeedLazyQuery({
+    const [firstMissions, setFirstMissions] = useState<GroupedByDates>({});
+
+    const formatDate = (date: string) => {
+        const sliced = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric" })
+            .format(new Date(date))
+            .split(" ");
+
+        return `${sliced[1].split(",")[0]} ${sliced[0]} ${sliced[2]}`;
+    };
+
+    const [getFeed, { error, data, fetchMore }] = useGet_FeedLazyQuery({
         onCompleted: (data) => {
             if (data?.getFeed.hasNextPage) {
                 setOffset(offset + pageSize);
+                groupMissionsByDate(data?.getFeed.items);
             }
         },
         onError: () => {
             console.error(error);
         },
+        notifyOnNetworkStatusChange: true,
     });
-    console.log({ data });
+
+    const groupMissionsByDate = (items: any[]) => {
+        const datesOccupied: GroupedByDates = {};
+
+        const localFirstMissions: GroupedByDates = {};
+
+        items.forEach((item) => {
+            const formattedDate = formatDate(item.date);
+
+            if (!datesOccupied[formattedDate]) {
+                localFirstMissions[item.title + item.date] = formattedDate;
+                datesOccupied[formattedDate] = item.title;
+            }
+        });
+
+        setFirstMissions(localFirstMissions);
+    };
+
+    console.log({ firstMissions });
 
     useEffect(() => {
         getFeed({
@@ -42,8 +75,6 @@ const Feed: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (loading) return <Spinner />;
-
     const nextPage = () => {
         if (data?.getFeed.hasNextPage) {
             fetchMore({
@@ -55,9 +86,23 @@ const Feed: React.FC = () => {
         }
     };
     return (
-        <StyledFeedContainer>
-            Feed <button onClick={() => nextPage()}></button>
-        </StyledFeedContainer>
+        <InfiniteScroll
+            dataLength={data?.getFeed.items.length || 0}
+            next={nextPage}
+            hasMore={data?.getFeed.hasNextPage || false}
+            loader={<Spinner />}
+        >
+            {data?.getFeed.items.map((item) => (
+                <Fragment key={item.title + item.date}>
+                    {firstMissions[item.title + item.date] && (
+                        <StyledHeaderContainer>
+                            <Header>{firstMissions[item.title + item.date]}</Header>
+                        </StyledHeaderContainer>
+                    )}
+                    <MissionView mission={item} />
+                </Fragment>
+            ))}
+        </InfiniteScroll>
     );
 };
 

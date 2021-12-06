@@ -9,6 +9,7 @@ const StyledHeader = styled.h2`
     ${iphoneX} {
         font-size: 16px;
         line-height: 20px;
+        margin: 0;
     }
 `;
 

@@ -8,6 +8,7 @@ const StyledButton = styled.button`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    border: none;
 
     ${iphoneX} {
         padding: 4px 12px;
